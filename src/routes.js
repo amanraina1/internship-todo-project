@@ -1,0 +1,23 @@
+import Home from "./components/Home.vue";
+import Add from "./components/Add.vue";
+
+import { createRouter, createWebHistory } from "vue-router";
+
+const routes = [
+  {
+    name: "Home",
+    component: Home,
+    path: "/",
+  },
+  {
+    name: "Add",
+    component: Add,
+    path: "/add",
+  },
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+export default router;

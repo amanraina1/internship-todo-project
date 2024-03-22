@@ -7,9 +7,12 @@
       <div class="content-wrapper">
         <!-- <ContentHeader></ContentHeader> -->
 
-        <section class="content">
-          <div class="container-fluid d-flex flex-column align-items-center">
-            <!-- <router-view /> -->
+        <section class="content" style="height: 800px">
+          <div
+            class="container-fluid d-flex flex-column align-items-center"
+            style="height: 800px"
+          >
+            <router-view />
           </div>
         </section>
       </div>
@@ -20,16 +23,12 @@
   </body>
 </template>
 
-<script>
+<script setup>
 import Navbar from "./dashboard/Navbar.vue";
 import Sidebar from "./dashboard/Sidebar.vue";
 import Footer from "./dashboard/Footer.vue";
-export default {
-  name: "App",
-  components: {
-    Navbar,
-    Sidebar,
-    Footer,
-  },
-};
 </script>
+
+<style>
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback");
+</style>

@@ -16,14 +16,14 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img
+          <!-- <img
             src="../assets/img/avatar5.png"
             class="img-circle elevation-2"
             alt="User Image"
-          />
+          /> -->
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ username }}</a>
+          <a href="#" class="d-block">Add Todo</a>
         </div>
       </div>
 
@@ -32,13 +32,7 @@
     <!-- /.sidebar -->
   </aside>
 </template>
-<script>
-export default {
-  name: "Sidebar",
-  data() {
-    return {
-      username: "Aman",
-    };
-  },
-};
+<script setup>
+// import { ref } from "vue";
+// const username = ref("Aman");
 </script>

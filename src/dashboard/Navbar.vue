@@ -1,8 +1,4 @@
-<script>
-export default {
-  name: "HelloWorld",
-};
-</script>
+<script setup></script>
 
 <template>
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -17,13 +13,7 @@ export default {
         <a class="nav-link" href="#">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a class="nav-link" href="#">Option 1</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a class="nav-link" href="#">Option 2</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a style="cursor: pointer" class="nav-link">Option 3</a>
+        <a class="nav-link" href="#">Add Todo</a>
       </li>
     </ul>
 
