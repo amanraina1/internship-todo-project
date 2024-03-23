@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import Todo from "./Todo.vue";
+import Header from "./Header.vue";
 import Loader from "./Loader.vue";
 const todos = ref([]);
 let page = ref(1);
@@ -26,6 +27,15 @@ const selectPageHandler = (i) => {
 const deltedTodo = () => {
   todos.value = store.getters.getAllTodos;
 };
+
+const wordLengthWithoutSpacing = (str) => str.replace(/\s/g, "").length;
+
+const filterTodo = () => {
+  todos.value.sort(
+    (a, b) =>
+      wordLengthWithoutSpacing(a.title) - wordLengthWithoutSpacing(b.title)
+  );
+};
 </script>
 
 <script>
@@ -34,6 +44,7 @@ import Todo from "./Todo.vue";
 
 <template>
   <div class="container-fluid">
+    <Header @filter="filterTodo" />
     <ul class="container-fluid">
       <li v-if="todos.length > 0" class="list" v-for="todo in displayedTodos">
         <Todo

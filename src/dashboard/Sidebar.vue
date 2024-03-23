@@ -1,5 +1,8 @@
 <template>
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside
+    style="height: 100%"
+    class="main-sidebar sidebar-dark-primary elevation-4"
+  >
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
       <img

@@ -51,5 +51,3 @@ const editTodo = async () => {
     </div>
   </div>
 </template>
-
-<!-- const id = router.currentRoute.value.params.id; -->
