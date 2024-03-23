@@ -7,15 +7,12 @@ const todos = ref([]);
 let page = ref(1);
 const dummyLoop = 9;
 const store = useStore();
-const isCalled = ref(false);
 
 onMounted(async () => {
-  // console.log(store.state.todos);
   if (!store.state.todos.length) {
     await store.dispatch("fetchTodos");
   }
   todos.value = store.getters.getAllTodos;
-  // console.log(store.state.todos[0]);
 });
 
 const displayedTodos = computed(() => {
@@ -32,7 +29,6 @@ const deltedTodo = () => {
 </script>
 
 <script>
-import { defineComponent } from "vue";
 import Todo from "./Todo.vue";
 </script>
 

@@ -10,10 +10,6 @@ const store = createStore({
     getAllTodos: (state) => {
       return state.todos;
     },
-    getTodoById: (state) => (id) => {
-      // console.log(id);
-      return state.todos.find((todo) => todo.id === Number(id));
-    },
   },
   actions: {
     async fetchTodos({ commit }) {
@@ -37,17 +33,17 @@ const store = createStore({
       commit("addTodo", response.data);
     },
     async updateTodo({ commit }, payload) {
-      const response = await axios.put(
+      const response = await axios.patch(
         `https://jsonplaceholder.typicode.com/todos/${payload.id}`,
         {
           title: payload.title,
         }
       );
-      // if (response.status === 201) {
-      //   await router.push("/");
-      // }
+      if (response.status === 200) {
+        await router.push("/");
+      }
 
-      // commit("updateTodo", response.data);
+      commit("updateTodo", payload);
     },
     async deleteTodo({ commit }, id) {
       await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`);
@@ -59,6 +55,10 @@ const store = createStore({
     addTodo: (state, todo) => state.todos.unshift(todo),
     deleteTodo: (state, id) =>
       (state.todos = state.todos.filter((todo) => todo.id !== id)),
+    updateTodo: (state, data) => {
+      const todo = state.todos.find((todo) => todo.id === Number(data.id));
+      todo.title = data.title;
+    },
   },
 });
 export default store;

@@ -1,7 +1,3 @@
-<!-- <script>
-
-</script> -->
-
 <script setup>
 import { ref, defineProps, defineEmits } from "vue";
 import { useStore } from "vuex";
@@ -19,12 +15,13 @@ const getRandomColor = () => {
 const handleCheckboxChange = () => {
   checkbox.value = !checkbox.value;
 };
-
+const mark = () => {
+  checkbox.value = !checkbox.value;
+};
 const emit = defineEmits(["delete"]);
 
 const deleteTodo = async () => {
   await store.dispatch("deleteTodo", props.id);
-  // console.log("hello");
   emit("delete");
 };
 </script>
@@ -36,12 +33,13 @@ const deleteTodo = async () => {
     class="container"
     :class="checkbox ? 'disabled' : ''"
     :style="checkbox ? 'background-color : darkgrey' : getRandomColor()"
+    @dblclick="mark(id)"
   >
     <!-- {{ checkbox }} -->
     <div class="profile">
       <span class="img">
         <img class="mx-2" src="../assets/avatar.svg" alt="user avatar" />
-        <b>User </b>
+        <b style="user-select: none">User </b>
       </span>
       <span>
         <label for="completed">
@@ -111,6 +109,7 @@ const deleteTodo = async () => {
   line-height: 30px;
   hyphens: auto;
   font-weight: 550;
+  user-select: none;
 }
 .container .info {
   display: flex;

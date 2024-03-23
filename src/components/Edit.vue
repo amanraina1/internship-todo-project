@@ -12,6 +12,14 @@ onMounted(async () => {
 
 const id = router.currentRoute.value.params.id;
 let title = ref("");
+
+const editTodo = async () => {
+  const payload = {
+    id,
+    title: title.value,
+  };
+  await store.dispatch("updateTodo", payload);
+};
 </script>
 <template>
   <div class="container-sm d-flex justify-content-center align-items-center">
