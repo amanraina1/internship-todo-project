@@ -23,7 +23,7 @@
           /> -->
         </div>
         <div class="info">
-          <a href="#" class="d-block">Add Todo</a>
+          <router-link to="/add" class="d-block">Add Todo</router-link>
         </div>
       </div>
 

@@ -1,19 +1,15 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import router from "@/routes";
-import axios from "axios";
+import { useStore } from "vuex";
+const store = useStore();
+
 onMounted(async () => {
-  const response = await axios.get(
-    `https://jsonplaceholder.typicode.com/todos/${id}`
-  );
-  // console.log(response);
-  title.value = response.data.title;
+  const allTodos = store.getters.getAllTodos;
+  const todo = allTodos.find((todo) => todo.id === Number(id));
+  title.value = todo.title;
 });
-// const editTodo = async () => {
-//   const response = await axios.put(
-//     `https://jsonplaceholder.typicode.com/todos/${id}`
-//   );
-// };
+
 const id = router.currentRoute.value.params.id;
 let title = ref("");
 </script>

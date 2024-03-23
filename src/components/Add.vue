@@ -1,15 +1,13 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
+
+import store from "@/store";
+
 const addTodo = async () => {
-  const response = await axios.post(
-    "https://jsonplaceholder.typicode.com/todos",
-    {
-      title: title.value,
-      completed: false,
-    }
-  );
-  console.log(response);
+  await store.dispatch("addTodo", {
+    title: title.value,
+    completed: false,
+  });
 };
 const title = ref("");
 </script>

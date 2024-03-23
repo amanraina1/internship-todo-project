@@ -25,7 +25,7 @@ const dummyLoop = 9;
       </span>
     </div>
 
-    <h4>-------------</h4>
+    <h4>Loading....</h4>
 
     <div class="button">
       <button class="bg-lightgrey delete-icon">-------</button>

@@ -1,12 +1,22 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import { useStore } from "vuex";
 import Todo from "./Todo.vue";
 import Loader from "./Loader.vue";
-import axios from "axios";
 const todos = ref([]);
 let page = ref(1);
 const dummyLoop = 9;
-onMounted(() => getData());
+const store = useStore();
+const isCalled = ref(false);
+
+onMounted(async () => {
+  // console.log(store.state.todos);
+  if (!store.state.todos.length) {
+    await store.dispatch("fetchTodos");
+  }
+  todos.value = store.getters.getAllTodos;
+  // console.log(store.state.todos[0]);
+});
 
 const displayedTodos = computed(() => {
   return todos.value.slice(page.value * 9 - 9, page.value * 9);
@@ -16,14 +26,16 @@ const selectPageHandler = (i) => {
   if (i >= 1 && i <= Math.ceil(todos.value.length / 9) && i !== page.value)
     page.value = i;
 };
-
-const getData = async () => {
-  const response = await axios.get(
-    "https://jsonplaceholder.typicode.com/todos"
-  );
-  todos.value = response.data;
+const deltedTodo = () => {
+  todos.value = store.getters.getAllTodos;
 };
 </script>
+
+<script>
+import { defineComponent } from "vue";
+import Todo from "./Todo.vue";
+</script>
+
 <template>
   <div class="container-fluid">
     <ul class="container-fluid">
@@ -33,6 +45,7 @@ const getData = async () => {
           :completed="todo.completed"
           :id="todo.id"
           :key="todo.id"
+          @delete="deltedTodo"
         />
       </li>
       <li v-else class="list" v-for="todo in dummyLoop">

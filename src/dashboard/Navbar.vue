@@ -10,10 +10,10 @@
         </a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a class="nav-link" href="#">Home</a>
+        <router-link to="/" class="nav-link">Home</router-link>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a class="nav-link" href="#">Add Todo</a>
+        <router-link to="/add" class="nav-link">Add Todo</router-link>
       </li>
     </ul>
 
@@ -21,7 +21,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
       <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+        <a class="nav-link" data-widget="navbar-search" role="button">
           <i class="fas fa-search"></i>
         </a>
         <div class="navbar-search-block">

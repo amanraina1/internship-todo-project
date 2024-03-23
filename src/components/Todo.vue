@@ -1,19 +1,31 @@
-<script setup>
-import { ref, onMounted, computed } from "vue";
-import axios from "axios";
+<!-- <script>
 
+</script> -->
+
+<script setup>
+import { ref, defineProps, defineEmits } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
 const props = defineProps({
   title: String,
   completed: Boolean,
   id: Number,
 });
-const handleCheckboxChange = () => {
-  checkbox.value = !checkbox.value;
-};
 let checkbox = ref(props.completed);
 const getRandomColor = () => {
   let color = `hsl(${Math.random() * 360},100%,75%)`;
   return `background-color : ${color}`;
+};
+const handleCheckboxChange = () => {
+  checkbox.value = !checkbox.value;
+};
+
+const emit = defineEmits(["delete"]);
+
+const deleteTodo = async () => {
+  await store.dispatch("deleteTodo", props.id);
+  // console.log("hello");
+  emit("delete");
 };
 </script>
 
@@ -23,7 +35,7 @@ const getRandomColor = () => {
   <div
     class="container"
     :class="checkbox ? 'disabled' : ''"
-    :style="getRandomColor()"
+    :style="checkbox ? 'background-color : darkgrey' : getRandomColor()"
   >
     <!-- {{ checkbox }} -->
     <div class="profile">
@@ -47,7 +59,7 @@ const getRandomColor = () => {
     <h4>{{ title }}</h4>
 
     <div class="button">
-      <button class="delete-icon">Delete</button>
+      <button @click="deleteTodo" class="delete-icon">Delete</button>
       <router-link :class="checkbox ? 'disabledBtn' : ''" :to="'/edit/' + id">
         <button class="edit-icon">Edit</button>
       </router-link>
