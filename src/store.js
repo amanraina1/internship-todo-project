@@ -13,19 +13,14 @@ const store = createStore({
   },
   actions: {
     async fetchTodos({ commit }) {
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/todos"
-      );
+      const response = await axios.get("http://localhost:3000/todos");
       commit("setTodos", response.data);
     },
     async addTodo({ commit }, payload) {
-      const response = await axios.post(
-        "https://jsonplaceholder.typicode.com/todos",
-        {
-          title: payload.title,
-          completed: payload.completed,
-        }
-      );
+      const response = await axios.post("http://localhost:3000/todos", {
+        title: payload.title,
+        completed: payload.completed,
+      });
       if (response.status === 201) {
         await router.push("/");
       }
@@ -34,9 +29,10 @@ const store = createStore({
     },
     async updateTodo({ commit }, payload) {
       const response = await axios.patch(
-        `https://jsonplaceholder.typicode.com/todos/${payload.id}`,
+        `http://localhost:3000/todos/${payload.id}`,
         {
           title: payload.title,
+          completed: payload.completed,
         }
       );
       if (response.status === 200) {
@@ -46,10 +42,11 @@ const store = createStore({
       commit("updateTodo", payload);
     },
     async updateCheckbox({ commit }, payload) {
+      console.log(payload);
       const response = await axios.patch(
-        `https://jsonplaceholder.typicode.com/todos/${payload.id}`,
+        `http://localhost:3000/todos/${payload.id}`,
         {
-          checkbox: payload.checkbox,
+          completed: payload.completed,
         }
       );
       if (response.status === 200) {
@@ -59,7 +56,7 @@ const store = createStore({
       commit("updateCheckbox", payload);
     },
     async deleteTodo({ commit }, id) {
-      await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`);
+      await axios.delete(`http://localhost:3000/todos/${id}`);
       commit("deleteTodo", id);
     },
   },
@@ -71,10 +68,11 @@ const store = createStore({
     updateTodo: (state, data) => {
       const todo = state.todos.find((todo) => todo.id === Number(data.id));
       todo.title = data.title;
+      todo.completed = data.completed;
     },
     updateCheckbox: (state, data) => {
       const todo = state.todos.find((todo) => todo.id === Number(data.id));
-      todo.completed = data.checkbox;
+      todo.completed = data.completed;
     },
   },
 });

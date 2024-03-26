@@ -3,11 +3,13 @@ import { onMounted, ref } from "vue";
 import router from "@/routes";
 import { useStore } from "vuex";
 const store = useStore();
+let completed = ref(false);
 
 onMounted(async () => {
   const allTodos = store.getters.getAllTodos;
   const todo = allTodos.find((todo) => todo.id === Number(id));
   title.value = todo.title;
+  completed.value = todo.completed;
 });
 
 const id = router.currentRoute.value.params.id;
@@ -20,6 +22,7 @@ const editTodo = async () => {
   const payload = {
     id,
     title: title.value,
+    completed: completed.value,
   };
 
   await store.dispatch("updateTodo", payload);
@@ -37,11 +40,21 @@ const editTodo = async () => {
             <label for="exampleInputEmail1">Edit Title</label>
             <input
               type="text"
-              name="name"
+              name="title"
               v-model="title"
               class="form-control"
               id="exampleInputEmail1"
               placeholder="Enter Title"
+            />
+          </div>
+          <div class="form-group d-flex">
+            <label for="exampleInputEmail1">Completed</label>
+            <input
+              type="checkbox"
+              name="title"
+              v-model="completed"
+              class="form-control"
+              id="exampleInputEmail1"
             />
           </div>
         </div>

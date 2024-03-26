@@ -1,118 +1,238 @@
 <script setup>
+import store from "@/store";
 import { ref, onMounted, computed } from "vue";
-import { useStore } from "vuex";
-import Todo from "./Todo.vue";
-import Header from "./Header.vue";
-import Loader from "./Loader.vue";
-const todos = ref([]);
-let page = ref(1);
-const dummyLoop = 9;
-const store = useStore();
+let data = ref([]);
+const page = ref(1);
+const TODO_PER_PAGE = 12;
+let count = ref(true);
+const dummyTodos = ref([]);
 
 onMounted(async () => {
   if (!store.state.todos.length) {
     await store.dispatch("fetchTodos");
   }
-  todos.value = store.getters.getAllTodos;
+  data.value = store.getters.getAllTodos;
 });
-
-// Render list of todos
 const displayedTodos = computed(() => {
-  return todos.value.slice(page.value * 9 - 9, page.value * 9);
+  return data.value.slice(
+    page.value * TODO_PER_PAGE - TODO_PER_PAGE,
+    page.value * TODO_PER_PAGE
+  );
 });
+const deleteTodo = async (id) => {
+  await store.dispatch("deleteTodo", id);
+  data.value = store.getters.getAllTodos;
+};
+// Filter todos on the basis of length
+const wordLengthWithoutSpacing = (str) => str.replace(/\s/g, "").length;
 
-// Pagination function
+const filterTodo = () => {
+  if (!count.value) {
+    data.value = dummyTodos.value;
+    count.value = true;
+  } else {
+    dummyTodos.value = [...data.value];
+    data.value.sort(
+      (a, b) =>
+        wordLengthWithoutSpacing(a.title) - wordLengthWithoutSpacing(b.title)
+    );
+    count.value = false;
+  }
+};
+
 const selectPageHandler = (i) => {
-  if (i >= 1 && i <= Math.ceil(todos.value.length / 9) && i !== page.value)
+  if (i >= 1 && i <= Math.ceil(data.value.length / 9) && i !== page.value)
     page.value = i;
 };
 
-//To update todo list after deleting a todo
-const deltedTodo = () => {
-  todos.value = store.getters.getAllTodos;
-};
-
-// Filter todos on the basis of length
-const wordLengthWithoutSpacing = (str) => str.replace(/\s/g, "").length;
-const filterTodo = () => {
-  todos.value.sort(
-    (a, b) =>
-      wordLengthWithoutSpacing(a.title) - wordLengthWithoutSpacing(b.title)
-  );
+const toggleCheckbox = async (id, completed) => {
+  const payload = {
+    id,
+    completed: !completed,
+  };
+  await store.dispatch("updateCheckbox", payload);
+  data.value = store.getters.getAllTodos;
 };
 </script>
 
 <template>
-  <div class="container-fluid">
-    <Header @filter="filterTodo" />
-    <ul class="container-fluid">
-      <li v-if="todos.length > 0" class="list" v-for="todo in displayedTodos">
-        <Todo
-          :title="todo.title"
-          :completed="todo.completed"
-          :id="todo.id"
-          :userId="todo.userId"
-          :key="todo.id"
-          @delete="deltedTodo"
-        />
-      </li>
-      <li v-else class="list" v-for="todo in dummyLoop">
-        <Loader />
-      </li>
-    </ul>
+  <div class="card container-fluid">
+    <div class="card-header">
+      <h3 class="card-title">Todo List</h3>
+    </div>
 
-    <!-- Pagination Code -->
-    <div v-if="todos.length > 0" class="pagination">
-      <span
-        :class="page === 1 ? 'pagination__disable' : ''"
-        @click="selectPageHandler(page - 1)"
-        >◀️</span
-      >
-      <span
-        :class="page === i + 1 ? 'pagination__selected' : ''"
-        @click="selectPageHandler(i + 1)"
-        v-for="(item, i) in [...Array(Math.ceil(todos.length / 9))]"
-      >
-        {{ i + 1 }}
-      </span>
-      <span
-        :class="
-          page === Math.ceil(todos.length / 9) ? 'pagination__disable' : ''
-        "
-        @click="selectPageHandler(page + 1)"
-        >▶️</span
-      >
+    <div class="card-body">
+      <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+        <div class="row mb-2">
+          <div class="col-sm-12 text-center col-md-12">
+            <button @click="filterTodo" class="bg-blue border-none">
+              Filter Todo
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <table
+              id="example2"
+              class="table table-bordered table-hover dataTable dtr-inline"
+              aria-describedby="example2_info"
+            >
+              <thead>
+                <tr>
+                  <th
+                    class="sorting sorting_asc"
+                    tabindex="0"
+                    aria-controls="example2"
+                    rowspan="1"
+                    colspan="1"
+                    aria-sort="ascending"
+                    aria-label="Rendering engine: activate to sort column descending"
+                  >
+                    ID No.
+                  </th>
+                  <th
+                    class="sorting"
+                    tabindex="0"
+                    aria-controls="example2"
+                    rowspan="1"
+                    colspan="2"
+                    aria-label="Browser: activate to sort column ascending"
+                  >
+                    Title
+                  </th>
+                  <th
+                    class="sorting"
+                    tabindex="0"
+                    aria-controls="example2"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Platform(s): activate to sort column ascending"
+                  >
+                    Status
+                  </th>
+                  <th
+                    class="sorting"
+                    tabindex="0"
+                    aria-controls="example2"
+                    rowspan="1"
+                    colspan="1"
+                    aria-label="Engine version: activate to sort column ascending"
+                  >
+                    Action Button
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="todo in displayedTodos">
+                  <td tabindex="0">{{ todo.id }}</td>
+                  <td
+                    @dblclick="toggleCheckbox(todo.id, todo.completed)"
+                    style="cursor: pointer"
+                    colspan="2"
+                    :class="todo.completed ? 'disable' : ''"
+                  >
+                    {{ todo.title }}
+                  </td>
+                  <td v-if="todo.completed">Completed ✅</td>
+                  <td v-else>Pending</td>
+                  <td class="d-flex align-items-center justify-content-around">
+                    <i
+                      @click="deleteTodo(todo.id)"
+                      style="cursor: pointer"
+                      title="Delete"
+                      class="fas fa-trash"
+                    ></i>
+                    <router-link :to="'/edit/' + todo.id">
+                      <i
+                        style="cursor: pointer"
+                        title="Edit"
+                        class="fas fa-edit text-dark"
+                      ></i>
+                    </router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-5">
+            <div
+              class="dataTables_info"
+              id="example2_info"
+              role="status"
+              aria-live="polite"
+            >
+              Showing {{ page }} to {{ TODO_PER_PAGE }} of
+              {{ data.length }} entries
+            </div>
+          </div>
+          <div
+            style="cursor: pointer"
+            class="col-sm-12 d-flex justify-content-end col-md-7"
+          >
+            <div
+              class="dataTables_paginate paging_simple_numbers"
+              id="example2_paginate"
+            >
+              <ul v-if="data.length > 0" class="pagination">
+                <li
+                  :class="page === 1 ? 'pagination__disable' : ''"
+                  class="paginate_button page-item previous"
+                  id="example2_previous"
+                >
+                  <span
+                    @click="selectPageHandler(page - 1)"
+                    data-dt-idx="0"
+                    tabindex="0"
+                    class="page-link"
+                    >Previous</span
+                  >
+                </li>
+                <li
+                  :class="page === i + 1 ? 'active' : ''"
+                  v-for="(_, i) in [...Array(Math.ceil(data.length / 12))]"
+                  @click="selectPageHandler(i + 1)"
+                  class="paginate_button page-item"
+                >
+                  <span
+                    aria-controls="example2"
+                    data-dt-idx="1"
+                    tabindex="0"
+                    class="page-link"
+                    >{{ i + 1 }}</span
+                  >
+                </li>
+
+                <li class="paginate_button page-item next" id="example2_next">
+                  <span
+                    :class="
+                      page === Math.ceil(data.length / 12)
+                        ? 'pagination__disable'
+                        : ''
+                    "
+                    @click="selectPageHandler(page + 1)"
+                    aria-controls="example2"
+                    data-dt-idx="7"
+                    tabindex="0"
+                    class="page-link"
+                    >Next</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <style scoped>
-.container-fluid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-ul li {
-  display: flex;
-}
-.list {
-  display: flex;
-  flex-wrap: wrap;
-}
-.pagination {
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-}
-.pagination span {
-  padding: 5px 10px;
-  border: 1px solid grey;
-  cursor: pointer;
-}
-.pagination__selected {
-  background-color: rgb(220, 220, 220);
-}
 .pagination__disable {
   opacity: 0;
+}
+.disable {
+  color: gray;
+  text-decoration: line-through;
 }
 </style>
