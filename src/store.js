@@ -42,7 +42,6 @@ const store = createStore({
       commit("updateTodo", payload);
     },
     async updateCheckbox({ commit }, payload) {
-      console.log(payload);
       const response = await axios.patch(
         `http://localhost:3000/todos/${payload.id}`,
         {

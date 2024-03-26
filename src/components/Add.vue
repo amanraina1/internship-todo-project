@@ -3,11 +3,12 @@ import { ref } from "vue";
 import { useToast } from "../../node_modules/vue-toastification";
 const toast = useToast();
 import store from "@/store";
+import * as Yup from "yup";
+import { Form, Field, ErrorMessage } from "vee-validate";
 const title = ref("");
 
 const addTodo = async () => {
   if (title.value === "") {
-    toast.error("Title filed must not be empty");
     return;
   }
   await store.dispatch("addTodo", {
@@ -16,6 +17,10 @@ const addTodo = async () => {
   });
   toast.success("Added Successfully!!");
 };
+
+const schema = Yup.object().shape({
+  title: Yup.string().required("Title is required"),
+});
 </script>
 <template>
   <div class="container-sm d-flex justify-content-center align-items-center">
@@ -23,27 +28,26 @@ const addTodo = async () => {
       <div class="card-header">
         <h3 class="card-title">Add Todo</h3>
       </div>
-      <form>
+      <Form @submit="addTodo" :validation-schema="schema">
         <div class="card-body">
           <div class="form-group">
             <label for="exampleInputEmail1">Add Title</label>
-            <input
+            <Field
               type="text"
-              name="name"
+              name="title"
               v-model="title"
               class="form-control"
               id="exampleInputEmail1"
               placeholder="Enter Title"
             />
+            <ErrorMessage class="text-red" name="title" />
           </div>
         </div>
 
         <div class="card-footer">
-          <button @click="addTodo" type="button" class="btn btn-primary">
-            Add Todo
-          </button>
+          <button class="btn btn-primary">Add Todo</button>
         </div>
-      </form>
+      </Form>
     </div>
   </div>
 </template>

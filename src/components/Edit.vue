@@ -3,25 +3,29 @@ import { onMounted, ref } from "vue";
 import router from "@/routes";
 import { useToast } from "../../node_modules/vue-toastification";
 const toast = useToast();
+import * as Yup from "yup";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import { useStore } from "vuex";
 const store = useStore();
-let completed = ref(false);
 let todo = ref([]);
+let completed = ref(null);
+const id = router.currentRoute.value.params.id;
+let title = ref("");
 
 onMounted(async () => {
-  const allTodos = store.getters.getAllTodos;
+  const allTodos = await store.getters.getAllTodos;
   todo.value = allTodos.find((todo) => todo.id === Number(id));
   title.value = todo.value.title;
   completed.value = todo.value.completed;
 });
 
-const id = router.currentRoute.value.params.id;
-let title = ref("");
+const schema = Yup.object().shape({
+  title: Yup.string().required("Title is required"),
+});
 
 //Function to edit todo
 const editTodo = async () => {
   if (title.value === "") {
-    toast.error("Title filed must not be empty");
     return;
   }
   if (
@@ -47,11 +51,11 @@ const editTodo = async () => {
       <div class="card-header">
         <h3 class="card-title">Edit Todo</h3>
       </div>
-      <form>
+      <Form @submit="editTodo" :validation-schema="schema">
         <div class="card-body">
           <div class="form-group">
             <label for="exampleInputEmail1">Edit Title</label>
-            <input
+            <Field
               type="text"
               name="title"
               v-model="title"
@@ -59,12 +63,14 @@ const editTodo = async () => {
               id="exampleInputEmail1"
               placeholder="Enter Title"
             />
+            <ErrorMessage class="text-red" name="title" />
           </div>
           <div class="form-group d-flex">
             <label for="exampleInputEmail1">Completed</label>
             <input
               type="checkbox"
-              name="title"
+              name="checkbox"
+              value="true"
               v-model="completed"
               class="form-control"
               id="exampleInputEmail1"
@@ -73,11 +79,9 @@ const editTodo = async () => {
         </div>
 
         <div class="card-footer">
-          <button @click="editTodo" type="button" class="btn btn-primary">
-            Edit Todo
-          </button>
+          <button class="btn btn-primary">Edit Todo</button>
         </div>
-      </form>
+      </Form>
     </div>
   </div>
 </template>
