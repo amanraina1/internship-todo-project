@@ -16,30 +16,30 @@ onMounted(async () => {
   todos.value = store.getters.getAllTodos;
 });
 
+// Render list of todos
 const displayedTodos = computed(() => {
   return todos.value.slice(page.value * 9 - 9, page.value * 9);
 });
 
+// Pagination function
 const selectPageHandler = (i) => {
   if (i >= 1 && i <= Math.ceil(todos.value.length / 9) && i !== page.value)
     page.value = i;
 };
+
+//To update todo list after deleting a todo
 const deltedTodo = () => {
   todos.value = store.getters.getAllTodos;
 };
 
+// Filter todos on the basis of length
 const wordLengthWithoutSpacing = (str) => str.replace(/\s/g, "").length;
-
 const filterTodo = () => {
   todos.value.sort(
     (a, b) =>
       wordLengthWithoutSpacing(a.title) - wordLengthWithoutSpacing(b.title)
   );
 };
-</script>
-
-<script>
-import Todo from "./Todo.vue";
 </script>
 
 <template>
@@ -51,6 +51,7 @@ import Todo from "./Todo.vue";
           :title="todo.title"
           :completed="todo.completed"
           :id="todo.id"
+          :userId="todo.userId"
           :key="todo.id"
           @delete="deltedTodo"
         />

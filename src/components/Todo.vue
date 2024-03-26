@@ -5,21 +5,26 @@ const store = useStore();
 const props = defineProps({
   title: String,
   completed: Boolean,
+  userId: Number,
   id: Number,
 });
 let checkbox = ref(props.completed);
+
+// Function to get random color
 const getRandomColor = () => {
   let color = `hsl(${Math.random() * 360},100%,75%)`;
   return `background-color : ${color}`;
 };
-const handleCheckboxChange = () => {
-  checkbox.value = !checkbox.value;
-};
-const mark = () => {
-  checkbox.value = !checkbox.value;
-};
-const emit = defineEmits(["delete"]);
 
+// Function for toggling checkbox
+const handleCheckboxChange = async () => {
+  checkbox.value = !checkbox.value;
+  const payload = { checkbox: checkbox.value, id: props.id };
+  await store.dispatch("updateCheckbox", payload);
+};
+
+// Function to emit delete after deleting a todo
+const emit = defineEmits(["delete"]);
 const deleteTodo = async () => {
   await store.dispatch("deleteTodo", props.id);
   emit("delete");
@@ -33,13 +38,13 @@ const deleteTodo = async () => {
     class="container"
     :class="checkbox ? 'disabled' : ''"
     :style="checkbox ? 'background-color : darkgrey' : getRandomColor()"
-    @dblclick="mark(id)"
+    @dblclick="handleCheckboxChange()"
   >
     <!-- {{ checkbox }} -->
     <div class="profile">
       <span class="img">
         <img class="mx-2" src="../assets/avatar.svg" alt="user avatar" />
-        <b style="user-select: none">User </b>
+        <b style="user-select: none">User {{ props.userId }} </b>
       </span>
       <span>
         <label for="completed">
@@ -97,7 +102,7 @@ const deleteTodo = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  /* gap: 10px; */
   font-weight: 900;
 }
 .container h4 {

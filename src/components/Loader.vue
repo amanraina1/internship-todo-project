@@ -1,8 +1,4 @@
-<script setup>
-import { ref } from "vue";
-
-const dummyLoop = 9;
-</script>
+<script setup></script>
 
 <template>
   <!-- Todo List Code -->

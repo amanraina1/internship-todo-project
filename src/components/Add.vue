@@ -4,6 +4,7 @@ import { ref } from "vue";
 import store from "@/store";
 
 const addTodo = async () => {
+  if (title.value === "") return;
   await store.dispatch("addTodo", {
     title: title.value,
     completed: false,

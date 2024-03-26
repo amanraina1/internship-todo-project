@@ -45,6 +45,19 @@ const store = createStore({
 
       commit("updateTodo", payload);
     },
+    async updateCheckbox({ commit }, payload) {
+      const response = await axios.patch(
+        `https://jsonplaceholder.typicode.com/todos/${payload.id}`,
+        {
+          checkbox: payload.checkbox,
+        }
+      );
+      if (response.status === 200) {
+        await router.push("/");
+      }
+
+      commit("updateCheckbox", payload);
+    },
     async deleteTodo({ commit }, id) {
       await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`);
       commit("deleteTodo", id);
@@ -58,6 +71,10 @@ const store = createStore({
     updateTodo: (state, data) => {
       const todo = state.todos.find((todo) => todo.id === Number(data.id));
       todo.title = data.title;
+    },
+    updateCheckbox: (state, data) => {
+      const todo = state.todos.find((todo) => todo.id === Number(data.id));
+      todo.completed = data.checkbox;
     },
   },
 });

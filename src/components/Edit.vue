@@ -13,11 +13,15 @@ onMounted(async () => {
 const id = router.currentRoute.value.params.id;
 let title = ref("");
 
+//Function to edit todo
 const editTodo = async () => {
+  if (title.value === "") return;
+
   const payload = {
     id,
     title: title.value,
   };
+
   await store.dispatch("updateTodo", payload);
 };
 </script>
