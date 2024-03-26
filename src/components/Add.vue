@@ -1,16 +1,21 @@
 <script setup>
 import { ref } from "vue";
-
+import { useToast } from "../../node_modules/vue-toastification";
+const toast = useToast();
 import store from "@/store";
+const title = ref("");
 
 const addTodo = async () => {
-  if (title.value === "") return;
+  if (title.value === "") {
+    toast.error("Title filed must not be empty");
+    return;
+  }
   await store.dispatch("addTodo", {
     title: title.value,
     completed: false,
   });
+  toast.success("Added Successfully!!");
 };
-const title = ref("");
 </script>
 <template>
   <div class="container-sm d-flex justify-content-center align-items-center">

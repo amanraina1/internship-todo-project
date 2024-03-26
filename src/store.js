@@ -56,8 +56,8 @@ const store = createStore({
       commit("updateCheckbox", payload);
     },
     async deleteTodo({ commit }, id) {
-      await axios.delete(`http://localhost:3000/todos/${id}`);
-      commit("deleteTodo", id);
+      await axios.delete(`http://localhost:3000/todos/${Number(id)}`);
+      commit("deleteTodo", Number(id));
     },
   },
   mutations: {

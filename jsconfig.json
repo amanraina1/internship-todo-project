@@ -4,5 +4,6 @@
       "@/*": ["./src/*"]
     }
   },
+  "types": ["vue-sweetalert2"],
   "exclude": ["node_modules", "dist"]
 }

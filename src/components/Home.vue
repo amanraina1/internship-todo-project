@@ -1,11 +1,15 @@
 <script setup>
 import store from "@/store";
 import { ref, onMounted, computed } from "vue";
+import { useToast } from "../../node_modules/vue-toastification";
+const toast = useToast();
 let data = ref([]);
 const page = ref(1);
 const TODO_PER_PAGE = 12;
 let count = ref(true);
 const dummyTodos = ref([]);
+const isOpen = ref(false);
+const id = ref();
 
 onMounted(async () => {
   if (!store.state.todos.length) {
@@ -13,6 +17,12 @@ onMounted(async () => {
   }
   data.value = store.getters.getAllTodos;
 });
+
+const showModal = (todoId) => {
+  isOpen.value = true;
+  id.value = todoId;
+};
+
 const displayedTodos = computed(() => {
   return data.value.slice(
     page.value * TODO_PER_PAGE - TODO_PER_PAGE,
@@ -22,6 +32,8 @@ const displayedTodos = computed(() => {
 const deleteTodo = async (id) => {
   await store.dispatch("deleteTodo", id);
   data.value = store.getters.getAllTodos;
+  isOpen.value = false;
+  toast.success("Deleted Successfully");
 };
 // Filter todos on the basis of length
 const wordLengthWithoutSpacing = (str) => str.replace(/\s/g, "").length;
@@ -56,6 +68,18 @@ const toggleCheckbox = async (id, completed) => {
 </script>
 
 <template>
+  <div class="root">
+    <Teleport to="body">
+      <div v-if="isOpen" class="modal">
+        <div>
+          <h1>Are you sure you want to Delete ?</h1>
+          <button class="bg-red" @click="deleteTodo(id)">Yes</button>
+          <button class="bg-primary" @click="isOpen = false">No</button>
+        </div>
+      </div>
+    </Teleport>
+  </div>
+
   <div class="card container-fluid">
     <div class="card-header">
       <h3 class="card-title">Todo List</h3>
@@ -137,7 +161,7 @@ const toggleCheckbox = async (id, completed) => {
                   <td v-else>Pending</td>
                   <td class="d-flex align-items-center justify-content-around">
                     <i
-                      @click="deleteTodo(todo.id)"
+                      @click="showModal(todo.id)"
                       style="cursor: pointer"
                       title="Delete"
                       class="fas fa-trash"
@@ -228,6 +252,36 @@ const toggleCheckbox = async (id, completed) => {
   </div>
 </template>
 <style scoped>
+.root {
+  position: relative;
+}
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal h1 {
+  color: aliceblue;
+}
+.modal > div {
+  background-color: #2f2e2eef;
+  padding: 50px;
+  border-radius: 10px;
+}
+.modal > div button {
+  padding: 10px 30px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: larger;
+  font-weight: 800;
+}
 .pagination__disable {
   opacity: 0;
 }

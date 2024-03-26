@@ -1,15 +1,18 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import router from "@/routes";
+import { useToast } from "../../node_modules/vue-toastification";
+const toast = useToast();
 import { useStore } from "vuex";
 const store = useStore();
 let completed = ref(false);
+let todo = ref([]);
 
 onMounted(async () => {
   const allTodos = store.getters.getAllTodos;
-  const todo = allTodos.find((todo) => todo.id === Number(id));
-  title.value = todo.title;
-  completed.value = todo.completed;
+  todo.value = allTodos.find((todo) => todo.id === Number(id));
+  title.value = todo.value.title;
+  completed.value = todo.value.completed;
 });
 
 const id = router.currentRoute.value.params.id;
@@ -17,8 +20,17 @@ let title = ref("");
 
 //Function to edit todo
 const editTodo = async () => {
-  if (title.value === "") return;
-
+  if (title.value === "") {
+    toast.error("Title filed must not be empty");
+    return;
+  }
+  if (
+    todo.value.title === title.value &&
+    completed.value === todo.value.completed
+  ) {
+    toast.error("No edit was made");
+    return;
+  }
   const payload = {
     id,
     title: title.value,
@@ -26,6 +38,7 @@ const editTodo = async () => {
   };
 
   await store.dispatch("updateTodo", payload);
+  toast.success("Edited Successfully!!");
 };
 </script>
 <template>
