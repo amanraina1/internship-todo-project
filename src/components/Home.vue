@@ -35,7 +35,6 @@ const deleteTodo = async (id) => {
 };
 // Filter todos on the basis of length
 const wordLengthWithoutSpacing = (str) => str.replace(/\s/g, "").length;
-
 const filterTodo = () => {
   if (!count.value) {
     data.value = dummyTodos.value;
@@ -49,12 +48,10 @@ const filterTodo = () => {
     count.value = false;
   }
 };
-
 const selectPageHandler = (i) => {
   if (i >= 1 && i <= Math.ceil(data.value.length / 12) && i !== page.value)
     page.value = i;
 };
-
 const toggleCheckbox = async (id, completed) => {
   const payload = {
     id,
@@ -151,6 +148,7 @@ const toggleCheckbox = async (id, completed) => {
                     @dblclick="toggleCheckbox(todo.id, todo.completed)"
                     style="cursor: pointer"
                     colspan="2"
+                    class="title"
                     :class="todo.completed ? 'disable' : ''"
                   >
                     {{ todo.title }}
@@ -186,7 +184,8 @@ const toggleCheckbox = async (id, completed) => {
               aria-live="polite"
             >
               Showing {{ page * TODO_PER_PAGE - TODO_PER_PAGE + 1 }} to
-              {{ page * TODO_PER_PAGE }} of {{ data.length }} entries
+              {{ Math.min(page * TODO_PER_PAGE, data.length) }} of
+              {{ data.length }} entries
             </div>
           </div>
           <div
@@ -199,7 +198,7 @@ const toggleCheckbox = async (id, completed) => {
             >
               <ul v-if="data.length > 0" class="pagination">
                 <li
-                  :class="page === 0 ? 'pagination__disable' : ''"
+                  :class="page === 1 ? 'pagination__disable' : ''"
                   class="paginate_button page-item previous"
                   id="example2_previous"
                 >

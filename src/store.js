@@ -61,7 +61,7 @@ const store = createStore({
   },
   mutations: {
     setTodos: (state, todos) => (state.todos = todos),
-    addTodo: (state, todo) => state.todos.unshift(todo),
+    addTodo: (state, todo) => state.todos.push(todo),
     deleteTodo: (state, id) =>
       (state.todos = state.todos.filter((todo) => todo.id !== id)),
     updateTodo: (state, data) => {

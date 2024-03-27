@@ -66,23 +66,37 @@ const editTodo = async () => {
             />
             <ErrorMessage class="text-red" name="title" />
           </div>
-          <div class="form-group d-flex">
-            <label for="exampleInputEmail1">Completed: </label>
+          <div class="form-group checkbox-input">
+            <label for="checkbox-input">Completed: </label>
             <input
               type="checkbox"
               name="checkbox"
-              value="true"
               v-model="completed"
               class="form-control"
-              id="exampleInputEmail1"
             />
           </div>
         </div>
 
         <div class="card-footer">
-          <button class="btn btn-primary">Edit Todo</button>
+          <button class="btn btn-primary">Update Todo</button>
         </div>
       </Form>
     </div>
   </div>
 </template>
+<style scoped>
+.checkbox-input {
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
+.checkbox-input label {
+  /* background-color: red; */
+}
+.checkbox-input input {
+  position: absolute;
+  height: 50%;
+  right: 2rem;
+  background-color: red;
+}
+</style>
