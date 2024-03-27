@@ -13,6 +13,7 @@ const id = router.currentRoute.value.params.id;
 let title = ref("");
 
 onMounted(async () => {
+  await store.dispatch("fetchTodos");
   const allTodos = await store.getters.getAllTodos;
   todo.value = allTodos.find((todo) => todo.id === Number(id));
   title.value = todo.value.title;
@@ -54,7 +55,7 @@ const editTodo = async () => {
       <Form @submit="editTodo" :validation-schema="schema">
         <div class="card-body">
           <div class="form-group">
-            <label for="exampleInputEmail1">Edit Title</label>
+            <label for="exampleInputEmail1">Edit Title: </label>
             <Field
               type="text"
               name="title"
@@ -66,7 +67,7 @@ const editTodo = async () => {
             <ErrorMessage class="text-red" name="title" />
           </div>
           <div class="form-group d-flex">
-            <label for="exampleInputEmail1">Completed</label>
+            <label for="exampleInputEmail1">Completed: </label>
             <input
               type="checkbox"
               name="checkbox"

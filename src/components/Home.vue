@@ -17,12 +17,10 @@ onMounted(async () => {
   }
   data.value = store.getters.getAllTodos;
 });
-
 const showModal = (todoId) => {
   isOpen.value = true;
   id.value = todoId;
 };
-
 const displayedTodos = computed(() => {
   return data.value.slice(
     page.value * TODO_PER_PAGE - TODO_PER_PAGE,
@@ -53,7 +51,7 @@ const filterTodo = () => {
 };
 
 const selectPageHandler = (i) => {
-  if (i >= 1 && i <= Math.ceil(data.value.length / 9) && i !== page.value)
+  if (i >= 1 && i <= Math.ceil(data.value.length / 12) && i !== page.value)
     page.value = i;
 };
 
@@ -187,8 +185,8 @@ const toggleCheckbox = async (id, completed) => {
               role="status"
               aria-live="polite"
             >
-              Showing {{ page }} to {{ TODO_PER_PAGE }} of
-              {{ data.length }} entries
+              Showing {{ page * TODO_PER_PAGE - TODO_PER_PAGE + 1 }} to
+              {{ page * TODO_PER_PAGE }} of {{ data.length }} entries
             </div>
           </div>
           <div
@@ -201,7 +199,7 @@ const toggleCheckbox = async (id, completed) => {
             >
               <ul v-if="data.length > 0" class="pagination">
                 <li
-                  :class="page === 1 ? 'pagination__disable' : ''"
+                  :class="page === 0 ? 'pagination__disable' : ''"
                   class="paginate_button page-item previous"
                   id="example2_previous"
                 >
