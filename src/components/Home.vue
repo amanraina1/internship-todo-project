@@ -29,9 +29,9 @@ const displayedTodos = computed(() => {
 });
 const deleteTodo = async (id) => {
   await store.dispatch("deleteTodo", id);
+  count.value = true;
   data.value = store.getters.getAllTodos;
   isOpen.value = false;
-  count.value = false;
   toast.success("Deleted Successfully");
 };
 // Filter todos on the basis of length

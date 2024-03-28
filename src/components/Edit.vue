@@ -14,8 +14,7 @@ let title = ref("");
 
 onMounted(async () => {
   await store.dispatch("fetchTodos");
-  const allTodos = await store.getters.getAllTodos;
-  todo.value = allTodos.find((todo) => todo.id === Number(id));
+  todo.value = store.getters.getTodoById(id);
   title.value = todo.value.title;
   completed.value = todo.value.completed;
 });

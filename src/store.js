@@ -10,6 +10,10 @@ const store = createStore({
     getAllTodos: (state) => {
       return state.todos;
     },
+    getTodoById: (state) => (id) => {
+      const todo = state.todos.find((todo) => todo.id === Number(id));
+      return todo;
+    },
   },
   actions: {
     async fetchTodos({ commit }) {
