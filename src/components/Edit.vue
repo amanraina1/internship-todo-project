@@ -23,7 +23,6 @@ onMounted(async () => {
 const schema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
 });
-
 //Function to edit todo
 const editTodo = async () => {
   if (title.value === "") {
@@ -50,7 +49,7 @@ const editTodo = async () => {
   <div class="container-sm d-flex justify-content-center align-items-center">
     <div class="card w-50 mt-5 card-primary">
       <div class="card-header">
-        <h3 class="card-title">Edit Todo</h3>
+        <h3 class="card-title">Update Todo</h3>
       </div>
       <Form @submit="editTodo" :validation-schema="schema">
         <div class="card-body">
@@ -68,12 +67,7 @@ const editTodo = async () => {
           </div>
           <div class="form-group checkbox-input">
             <label for="checkbox-input">Completed: </label>
-            <input
-              type="checkbox"
-              name="checkbox"
-              v-model="completed"
-              class="form-control"
-            />
+            <input type="checkbox" name="checkbox" v-model="completed" />
           </div>
         </div>
 
@@ -86,17 +80,13 @@ const editTodo = async () => {
 </template>
 <style scoped>
 .checkbox-input {
-  position: relative;
   display: flex;
-  gap: 10px;
-}
-.checkbox-input label {
+  flex-direction: column;
   /* background-color: red; */
 }
 .checkbox-input input {
-  position: absolute;
-  height: 50%;
-  right: 2rem;
+  height: 25px;
+  width: 25px;
   background-color: red;
 }
 </style>

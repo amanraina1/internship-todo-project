@@ -6,16 +6,16 @@ const toast = useToast();
 let data = ref([]);
 const page = ref(1);
 const TODO_PER_PAGE = 12;
-let count = ref(true);
+let count = ref(false);
 const dummyTodos = ref([]);
 const isOpen = ref(false);
 const id = ref();
 
 onMounted(async () => {
-  if (!store.state.todos.length) {
-    await store.dispatch("fetchTodos");
-  }
+  await store.dispatch("fetchTodos");
   data.value = store.getters.getAllTodos;
+  dummyTodos.value = [...data.value];
+  filterTodo();
 });
 const showModal = (todoId) => {
   isOpen.value = true;
@@ -31,16 +31,16 @@ const deleteTodo = async (id) => {
   await store.dispatch("deleteTodo", id);
   data.value = store.getters.getAllTodos;
   isOpen.value = false;
+  count.value = false;
   toast.success("Deleted Successfully");
 };
 // Filter todos on the basis of length
 const wordLengthWithoutSpacing = (str) => str.replace(/\s/g, "").length;
 const filterTodo = () => {
   if (!count.value) {
-    data.value = dummyTodos.value;
+    data.value = [...dummyTodos.value];
     count.value = true;
   } else {
-    dummyTodos.value = [...data.value];
     data.value.sort(
       (a, b) =>
         wordLengthWithoutSpacing(a.title) - wordLengthWithoutSpacing(b.title)
@@ -85,7 +85,7 @@ const toggleCheckbox = async (id, completed) => {
         <div class="row mb-2">
           <div class="col-sm-12 text-center col-md-12">
             <button @click="filterTodo" class="bg-blue border-none">
-              Filter Todo
+              {{ count ? "Sort Todo" : "List Todo" }}
             </button>
           </div>
         </div>
@@ -165,7 +165,7 @@ const toggleCheckbox = async (id, completed) => {
                     <router-link :to="'/edit/' + todo.id">
                       <i
                         style="cursor: pointer"
-                        title="Edit"
+                        title="Update"
                         class="fas fa-edit text-dark"
                       ></i>
                     </router-link>
