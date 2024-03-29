@@ -142,8 +142,10 @@ const toggleCheckbox = async (id, completed) => {
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="todo in displayedTodos">
-                  <td tabindex="0">{{ todo.id }}</td>
+                <tr v-for="(todo, index) in displayedTodos">
+                  <td tabindex="0">
+                    {{ page * TODO_PER_PAGE - TODO_PER_PAGE + index + 1 }}
+                  </td>
                   <td
                     @dblclick="toggleCheckbox(todo.id, todo.completed)"
                     style="cursor: pointer"
