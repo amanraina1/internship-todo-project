@@ -59,6 +59,11 @@ const toggleCheckbox = async (id, completed) => {
   };
   await store.dispatch("updateCheckbox", payload);
   data.value = store.getters.getAllTodos;
+  if (!completed) {
+    toast.success("Comleted Todo!!");
+  } else {
+    toast.error("Pending Todo");
+  }
 };
 </script>
 
@@ -170,6 +175,7 @@ const toggleCheckbox = async (id, completed) => {
                         style="cursor: pointer"
                         title="Update"
                         class="fas fa-edit text-dark"
+                        data-test-id="editBtn"
                       ></i>
                     </router-link>
                   </td>

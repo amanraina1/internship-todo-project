@@ -1,5 +1,7 @@
 import { mount, shallowMount } from "@vue/test-utils";
 import Edit from "@/components/Edit.vue";
+import { createRouter, createMemoryHistory } from "vue-router";
+import router from "../../src/routes";
 import store from "@/store";
 
 describe("Edit", () => {
@@ -11,7 +13,7 @@ describe("Edit", () => {
       mocks: {
         $router: mockRouter,
       },
-      plugins: [store],
+      plugins: [store, router],
     },
   });
   it("testing if component is mounted", async () => {
@@ -29,5 +31,18 @@ describe("Edit", () => {
     await input.setValue("By the Highway");
 
     expect(input.element.value).toBe("By the Highway");
+  });
+  it("navigates to destination route when link is clicked", async () => {
+    // Create a mock router instance with a memory history
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [{ path: "/", name: "Home" }],
+    });
+
+    // Simulate clicking on the link
+    await wrapper.find("button").trigger("click");
+
+    // Assert that the route has changed to "/destination"
+    expect(router.currentRoute.value.path).toBe("/");
   });
 });

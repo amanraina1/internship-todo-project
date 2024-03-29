@@ -1,7 +1,9 @@
 import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Home from "@/components/Home.vue";
+import router from "../../src/routes";
 // import store from "@/store";
+import { createRouter, createMemoryHistory } from "vue-router";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 
 describe("Home", () => {
@@ -33,7 +35,7 @@ describe("Home", () => {
       mocks: {
         $router: mockRouter,
       },
-      plugins: [store],
+      plugins: [store, router],
     },
   });
 
