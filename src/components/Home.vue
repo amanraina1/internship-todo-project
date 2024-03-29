@@ -163,6 +163,7 @@ const toggleCheckbox = async (id, completed) => {
                       style="cursor: pointer"
                       title="Delete"
                       class="fas fa-trash"
+                      data-test-id="deleteBtn"
                     ></i>
                     <router-link :to="'/edit/' + todo.id">
                       <i

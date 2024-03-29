@@ -36,14 +36,17 @@ describe("Home", () => {
       plugins: [store],
     },
   });
-  it("testing if component is mounted", async () => {
+
+  it("tests if component is mounted", async () => {
     expect(wrapper.exists()).toBeTruthy();
   });
-  it("testing input fields", async () => {
+
+  it("tests input fields", async () => {
     expect(wrapper.findAll("button").length).toEqual(1);
     expect(wrapper.findAll("button").at(0).text()).toMatch("List Todo");
   });
-  it("renders correctly with data from the Vuex store", async () => {
+
+  it("tests renders correctly with data from the Vuex store", async () => {
     // Assert that the table exists
     expect(wrapper.find("table").exists()).toBe(true);
 
@@ -62,7 +65,8 @@ describe("Home", () => {
     expect(rows[1].text()).toContain("Janyyy");
     expect(rows[2].text()).toContain("Jane");
   });
-  it("sorts items correctly by name when the name column is clicked", async () => {
+
+  it("tests sorts items correctly by name when the name column is clicked", async () => {
     // Assert that the table exists
     expect(wrapper.find("table").exists()).toBe(true);
     wrapper.vm.data = [...storeOptions.modules.state.data];
@@ -76,5 +80,16 @@ describe("Home", () => {
     expect(rows[0].text()).toContain("Doe");
     expect(rows[1].text()).toContain("Jane");
     expect(rows[2].text()).toContain("Janyyy");
+  });
+
+  it("tests opens modal when button is clicked", async () => {
+    expect(wrapper.vm.isOpen).toBe(false);
+
+    // Click on the button to open the modal
+    await wrapper.find('[data-test-id="deleteBtn"]').trigger("click");
+    await wrapper.vm.$nextTick();
+
+    // Assert that the modal is rendered
+    expect(wrapper.vm.isOpen).toBe(true);
   });
 });
