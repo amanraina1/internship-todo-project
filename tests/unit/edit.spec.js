@@ -1,4 +1,4 @@
-import { mount, shallowMount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import Edit from "@/components/Edit.vue";
 import { createRouter, createMemoryHistory } from "vue-router";
 import router from "../../src/routes";

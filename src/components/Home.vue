@@ -112,7 +112,7 @@ const toggleCheckbox = async (id, completed) => {
                     aria-sort="ascending"
                     aria-label="Rendering engine: activate to sort column descending"
                   >
-                    ID No.
+                    S. No.
                   </th>
                   <th
                     class="sorting"

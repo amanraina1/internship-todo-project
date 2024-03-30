@@ -10,7 +10,7 @@
       "userId": 1,
       "id": 2,
       "title": "quis ut nam facilis et officia qui",
-      "completed": false
+      "completed": true
     },
     {
       "userId": 1,
@@ -22,7 +22,7 @@
       "userId": 1,
       "id": 4,
       "title": "et porro tempora",
-      "completed": false
+      "completed": true
     },
     {
       "userId": 1,
@@ -34,7 +34,7 @@
       "userId": 1,
       "id": 6,
       "title": "qui ullam ratione quibusdam voluptatem quia omnis",
-      "completed": false
+      "completed": true
     },
     {
       "userId": 1,
