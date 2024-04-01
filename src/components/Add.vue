@@ -15,7 +15,7 @@ const addTodo = async () => {
     title: title.value,
     completed: false,
   });
-  toast.success("Added Successfully!!");
+  toast.success("Todo has been added successfully");
 };
 
 const schema = Yup.object().shape({

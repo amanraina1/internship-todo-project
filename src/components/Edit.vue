@@ -31,7 +31,7 @@ const editTodo = async () => {
     todo.value.title === title.value &&
     completed.value === todo.value.completed
   ) {
-    toast.error("No edit was made");
+    toast.error("No edit was made!!");
     return;
   }
   const payload = {
@@ -41,7 +41,7 @@ const editTodo = async () => {
   };
 
   await store.dispatch("updateTodo", payload);
-  toast.success("Edited Successfully!!");
+  toast.success("Todo has been updated successfully");
 };
 </script>
 <template>

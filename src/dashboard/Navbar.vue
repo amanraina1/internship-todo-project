@@ -9,10 +9,11 @@
           <i class="fas fa-bars"></i>
         </a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <router-link to="/" class="nav-link">Home</router-link>
+      <li class="nav-item d-none d-sm-inline-block" @click="resetPage">
+        <!-- <router-link to="/" class="nav-link">Home</router-link> -->
+        <a href="/" class="nav-link">Home</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <li @click="" class="nav-item d-none d-sm-inline-block">
         <router-link to="/add" class="nav-link">Add Todo</router-link>
       </li>
     </ul>

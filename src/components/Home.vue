@@ -32,7 +32,7 @@ const deleteTodo = async (id) => {
   count.value = true;
   data.value = store.getters.getAllTodos;
   isOpen.value = false;
-  toast.success("Deleted Successfully");
+  toast.success("Todo has been deleted successfully");
 };
 // Filter todos on the basis of length
 const wordLengthWithoutSpacing = (str) => str.replace(/\s/g, "").length;
@@ -60,9 +60,9 @@ const toggleCheckbox = async (id, completed) => {
   await store.dispatch("updateCheckbox", payload);
   data.value = store.getters.getAllTodos;
   if (!completed) {
-    toast.success("Comleted Todo!!");
+    toast.success("Marked as completed !!");
   } else {
-    toast.error("Pending Todo");
+    toast.error("Marked as not completed");
   }
 };
 </script>
@@ -161,7 +161,7 @@ const toggleCheckbox = async (id, completed) => {
                     {{ todo.title }}
                   </td>
                   <td v-if="todo.completed">Completed ✅</td>
-                  <td v-else>Pending</td>
+                  <td v-else>Not Completed</td>
                   <td class="d-flex align-items-center justify-content-around">
                     <i
                       @click="showModal(todo.id)"
