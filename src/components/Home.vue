@@ -107,8 +107,6 @@ const toggleCheckbox = async (id, completed) => {
                     class="sorting sorting_asc"
                     tabindex="0"
                     aria-controls="example2"
-                    rowspan="1"
-                    colspan="1"
                     aria-sort="ascending"
                     aria-label="Rendering engine: activate to sort column descending"
                   >
@@ -118,8 +116,6 @@ const toggleCheckbox = async (id, completed) => {
                     class="sorting"
                     tabindex="0"
                     aria-controls="example2"
-                    rowspan="1"
-                    colspan="2"
                     aria-label="Browser: activate to sort column ascending"
                   >
                     Title
@@ -128,8 +124,6 @@ const toggleCheckbox = async (id, completed) => {
                     class="sorting"
                     tabindex="0"
                     aria-controls="example2"
-                    rowspan="1"
-                    colspan="1"
                     aria-label="Platform(s): activate to sort column ascending"
                   >
                     Status
@@ -138,8 +132,6 @@ const toggleCheckbox = async (id, completed) => {
                     class="sorting"
                     tabindex="0"
                     aria-controls="example2"
-                    rowspan="1"
-                    colspan="1"
                     aria-label="Engine version: activate to sort column ascending"
                   >
                     Action Button
@@ -154,8 +146,7 @@ const toggleCheckbox = async (id, completed) => {
                   <td
                     @dblclick="toggleCheckbox(todo.id, todo.completed)"
                     style="cursor: pointer"
-                    colspan="2"
-                    class="title"
+                    class="title w-50 text-break"
                     :class="todo.completed ? 'disable' : ''"
                   >
                     {{ todo.title }}
