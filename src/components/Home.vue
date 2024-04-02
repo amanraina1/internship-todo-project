@@ -153,19 +153,19 @@ const toggleCheckbox = async (id, completed) => {
                   </td>
                   <td v-if="todo.completed">Completed ✅</td>
                   <td v-else>Not Completed</td>
-                  <td class="d-flex align-items-center justify-content-around">
+                  <td class="">
                     <i
                       @click="showModal(todo.id)"
                       style="cursor: pointer"
                       title="Delete"
-                      class="fas text-danger fa-trash"
+                      class="fas w-50 text-center text-danger fa-trash"
                       data-test-id="deleteBtn"
                     ></i>
                     <router-link :to="'/edit/' + todo.id">
                       <i
                         style="cursor: pointer"
                         title="Update"
-                        class="fas fa-edit text-primary"
+                        class="fas w-50 text-center fa-edit text-primary"
                         data-test-id="editBtn"
                       ></i>
                     </router-link>
