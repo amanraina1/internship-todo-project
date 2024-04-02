@@ -80,7 +80,7 @@ const toggleCheckbox = async (id, completed) => {
     </Teleport>
   </div>
 
-  <div class="card container-fluid">
+  <div class="card m-3 container-fluid">
     <div class="card-header">
       <h3 class="card-title">Todo List</h3>
     </div>
@@ -89,7 +89,7 @@ const toggleCheckbox = async (id, completed) => {
       <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
         <div class="row mb-2">
           <div class="col-sm-12 text-center col-md-12">
-            <button @click="filterTodo" class="bg-blue border-none">
+            <button @click="filterTodo" class="bg-primary btn">
               {{ count ? "Sort Todo" : "List Todo" }}
             </button>
           </div>
@@ -167,14 +167,14 @@ const toggleCheckbox = async (id, completed) => {
                       @click="showModal(todo.id)"
                       style="cursor: pointer"
                       title="Delete"
-                      class="fas fa-trash"
+                      class="fas text-danger fa-trash"
                       data-test-id="deleteBtn"
                     ></i>
                     <router-link :to="'/edit/' + todo.id">
                       <i
                         style="cursor: pointer"
                         title="Update"
-                        class="fas fa-edit text-dark"
+                        class="fas fa-edit text-primary"
                         data-test-id="editBtn"
                       ></i>
                     </router-link>
@@ -294,5 +294,8 @@ const toggleCheckbox = async (id, completed) => {
 .disable {
   color: gray;
   text-decoration: line-through;
+}
+.btn {
+  border: none;
 }
 </style>
